@@ -228,5 +228,14 @@ export function createGenericCliAdapter(
       }
     },
     sessionCodec: defaultConfig.sessionCodec ?? defaultSessionCodec,
+    providers: [
+      {
+        name: "generic-cli",
+        description: "Generic CLI adapter that can execute any command-line tool",
+        models: [],
+        requiredEnv: [],
+        optionalConfig: ["command", "args", "cwd", "timeoutSec", "graceSec", "env"],
+      },
+    ],
   };
 }

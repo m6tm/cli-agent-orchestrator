@@ -69,5 +69,14 @@ export function createKimiAdapter(): ReturnType<typeof createGenericCliAdapter> 
         return (params?.sessionId as string) || null;
       },
     },
+    providers: [
+      {
+        name: "kimi",
+        description: "Moonshot Kimi API via Kimi Code CLI",
+        models: ["kimi-k1", "kimi-k2", "kimi-k2.5"],
+        requiredEnv: ["KIMI_API_KEY"],
+        optionalConfig: ["prompt", "cwd", "outputFormat", "timeoutSec", "model"],
+      },
+    ],
   };
 }

@@ -1,4 +1,4 @@
-import { ServerAdapterModule } from "../types/index.js";
+import { ServerAdapterModule, ProviderInfo } from "../types/index.js";
 
 /**
  * Adapter Registry
@@ -33,6 +33,35 @@ export class AdapterRegistry {
 
   clear(): void {
     this.adapters.clear();
+  }
+
+  /**
+   * List all providers across all registered adapters
+   */
+  listProviders(): ProviderInfo[] {
+    const providers: ProviderInfo[] = [];
+    this.adapters.forEach((adapter) => {
+      if (adapter.providers) {
+        providers.push(...adapter.providers);
+      }
+    });
+    return providers;
+  }
+
+  getProviders(adapterType: string): ProviderInfo[] {
+    const adapter = this.adapters.get(adapterType);
+    return adapter?.providers ?? [];
+  }
+
+  getProvider(providerName: string): ProviderInfo | undefined {
+    let found: ProviderInfo | undefined;
+    this.adapters.forEach((adapter) => {
+      if (!found && adapter.providers) {
+        const match = adapter.providers.find((p) => p.name === providerName);
+        if (match) found = match;
+      }
+    });
+    return found;
   }
 }
 

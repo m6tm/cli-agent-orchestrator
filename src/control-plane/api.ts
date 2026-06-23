@@ -197,9 +197,29 @@ export function createControlPlaneApi(config: ControlPlaneApiConfig): express.Ex
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
-  // List adapter types
+  // List adapters
   app.get("/api/v1/adapters", authenticateAdmin, (_req, res) => {
     res.json({ adapters: config.registry.list() });
+  });
+
+  // List providers
+  app.get("/api/v1/providers", authenticateAdmin, (_req, res) => {
+    res.json({ providers: config.registry.listProviders() });
+  });
+
+  // Get providers for a specific adapter
+  app.get("/api/v1/adapters/:adapterType/providers", authenticateAdmin, (req, res) => {
+    const providers = config.registry.getProviders(req.params.adapterType);
+    res.json({ providers });
+  });
+
+  // Get a specific provider by name
+  app.get("/api/v1/providers/:providerName", authenticateAdmin, (req, res) => {
+    const provider = config.registry.getProvider(req.params.providerName);
+    if (!provider) {
+      return res.status(404).json({ code: "NOT_FOUND", message: "Provider not found" });
+    }
+    res.json({ provider });
   });
 
   // Create agent

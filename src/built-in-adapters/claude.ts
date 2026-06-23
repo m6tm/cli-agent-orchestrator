@@ -71,5 +71,14 @@ export function createClaudeAdapter(): ReturnType<typeof createGenericCliAdapter
         return (params?.sessionId as string) || null;
       },
     },
+    providers: [
+      {
+        name: "anthropic",
+        description: "Anthropic Claude API via Claude Code CLI",
+        models: ["claude-3-5-sonnet-20241022", "claude-3-opus-20240229", "claude-3-haiku-20240307"],
+        requiredEnv: ["ANTHROPIC_API_KEY"],
+        optionalConfig: ["prompt", "cwd", "skillsDir", "timeoutSec", "model"],
+      },
+    ],
   };
 }

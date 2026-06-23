@@ -61,4 +61,58 @@ describe("AdapterRegistry", () => {
     registry.clear();
     expect(registry.list()).toEqual([]);
   });
+
+  it("should list providers across all adapters", () => {
+    registry.register({
+      ...mockAdapter,
+      providers: [
+        { name: "provider-a", models: ["model-1"] },
+      ],
+    });
+    registry.register({
+      type: "test2",
+      execute: async () => ({ exitCode: 0, signal: null, timedOut: false }),
+      providers: [
+        { name: "provider-b", models: ["model-2"] },
+      ],
+    });
+    const providers = registry.listProviders();
+    expect(providers).toHaveLength(2);
+    expect(providers.map((p) => p.name)).toContain("provider-a");
+    expect(providers.map((p) => p.name)).toContain("provider-b");
+  });
+
+  it("should get providers for a specific adapter", () => {
+    registry.register({
+      ...mockAdapter,
+      providers: [
+        { name: "provider-a", models: ["model-1"] },
+      ],
+    });
+    const providers = registry.getProviders("test");
+    expect(providers).toHaveLength(1);
+    expect(providers[0].name).toBe("provider-a");
+  });
+
+  it("should return empty array for adapter without providers", () => {
+    registry.register(mockAdapter);
+    expect(registry.getProviders("test")).toEqual([]);
+  });
+
+  it("should get a specific provider by name", () => {
+    registry.register({
+      ...mockAdapter,
+      providers: [
+        { name: "provider-a", description: "Test provider" },
+      ],
+    });
+    const provider = registry.getProvider("provider-a");
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("provider-a");
+    expect(provider?.description).toBe("Test provider");
+  });
+
+  it("should return undefined for unknown provider", () => {
+    expect(registry.getProvider("unknown")).toBeUndefined();
+  });
 });

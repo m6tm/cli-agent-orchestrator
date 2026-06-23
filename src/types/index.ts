@@ -76,6 +76,14 @@ export interface AdapterSessionCodec {
   getDisplayId?(params: Record<string, unknown> | null): string | null;
 }
 
+export interface ProviderInfo {
+  name: string;
+  description?: string;
+  models?: string[];
+  requiredEnv?: string[];
+  optionalConfig?: string[];
+}
+
 export interface ServerAdapterModule {
   type: string;
   execute: (ctx: AdapterExecutionContext) => Promise<AdapterExecutionResult>;
@@ -83,6 +91,7 @@ export interface ServerAdapterModule {
   sessionCodec?: AdapterSessionCodec;
   models?: string[];
   agentConfigurationDoc?: string;
+  providers?: ProviderInfo[];
 }
 
 // ============================================================================

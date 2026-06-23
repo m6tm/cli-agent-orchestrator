@@ -90,11 +90,30 @@ describe("Control Plane API E2E", () => {
     });
   });
 
-  describe("Adapters", () => {
-    it("should list adapters", async () => {
-      const res = await request(app).get("/api/v1/adapters").set("x-api-key", adminApiKey);
+  describe("Providers", () => {
+    it("should list all providers", async () => {
+      const res = await request(app).get("/api/v1/providers").set("x-api-key", adminApiKey);
       expect(res.status).toBe(200);
-      expect(res.body.adapters).toContain("generic");
+      expect(res.body.providers).toBeDefined();
+      expect(Array.isArray(res.body.providers)).toBe(true);
+    });
+
+    it("should get providers for a specific adapter", async () => {
+      const res = await request(app).get("/api/v1/adapters/generic/providers").set("x-api-key", adminApiKey);
+      expect(res.status).toBe(200);
+      expect(res.body.providers).toBeDefined();
+    });
+
+    it("should get a specific provider by name", async () => {
+      const res = await request(app).get("/api/v1/providers/generic-cli").set("x-api-key", adminApiKey);
+      expect(res.status).toBe(200);
+      expect(res.body.provider).toBeDefined();
+      expect(res.body.provider.name).toBe("generic-cli");
+    });
+
+    it("should return 404 for unknown provider", async () => {
+      const res = await request(app).get("/api/v1/providers/unknown").set("x-api-key", adminApiKey);
+      expect(res.status).toBe(404);
     });
   });
 

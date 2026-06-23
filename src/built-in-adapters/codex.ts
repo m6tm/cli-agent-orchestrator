@@ -72,5 +72,14 @@ export function createCodexAdapter(): ReturnType<typeof createGenericCliAdapter>
         return (params?.threadId as string) || (params?.previousResponseId as string) || null;
       },
     },
+    providers: [
+      {
+        name: "openai",
+        description: "OpenAI API via Codex CLI",
+        models: ["gpt-4o", "gpt-4o-mini", "o1-preview", "o1-mini"],
+        requiredEnv: ["OPENAI_API_KEY"],
+        optionalConfig: ["prompt", "cwd", "timeoutSec", "model"],
+      },
+    ],
   };
 }
