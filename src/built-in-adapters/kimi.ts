@@ -72,7 +72,7 @@ export function createKimiAdapter(): ReturnType<typeof createGenericCliAdapter> 
     providers: [
       {
         name: "kimi",
-        description: "Moonshot Kimi API via Kimi Code CLI",
+        description: "Kimi Code CLI by Moonshot AI",
         models: ["kimi-k1", "kimi-k2", "kimi-k2.5"],
         requiredEnv: ["KIMI_API_KEY"],
         optionalConfig: ["prompt", "cwd", "outputFormat", "timeoutSec", "model"],
