@@ -18,6 +18,7 @@ export default defineConfig({
         'dist/',
         '**/*.d.ts',
         'src/index.ts',
+        'src/main.ts',
         'src/types/**/*.ts',
         'src/built-in-adapters/claude.ts',
         'src/built-in-adapters/codex.ts',
