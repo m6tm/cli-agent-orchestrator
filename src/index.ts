@@ -100,6 +100,7 @@ export class Orchestrator {
     };
 
     this.server = startControlPlaneServer(apiConfig);
+    console.log(`[Orchestrator] Server started on port ${apiConfig.port}`);
     return this.server;
   }
 
